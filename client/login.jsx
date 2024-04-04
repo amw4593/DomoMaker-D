@@ -99,4 +99,4 @@ const init = () => {
     root.render(<LoginWindow />);
 };
 
-wondow.onload = init;
+window.onload = init;
