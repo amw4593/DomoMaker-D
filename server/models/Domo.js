@@ -24,11 +24,16 @@ const DomoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  description: {
+    type: String,
+    trim: true,
+  },
 });
 
 DomoSchema.statics.toAPI = (doc) => ({
   name: doc.name,
   age: doc.age,
+  description: doc.description,
 });
 
 const DomoModel = mongoose.model('Domo', DomoSchema);

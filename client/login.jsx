@@ -40,6 +40,28 @@ const handleSignup = (e) => {
     return false;
 }
 
+const handleChangePassword = (e) => {
+    e.preventDefault();
+    helper.hideError();
+
+    const oldPassword = e.target.querySelector('#oldPass').value;
+    const newPassword = e.target.querySelector('#newPass').value;
+    const confirmPassword = e.target.querySelector('#confirmPass').value;
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+        helper.handleError('All fields are required!');
+        return false;
+    }
+
+    if (newPassword !== confirmPassword) {
+        helper.handleError('Passwords do not match!');
+        return false;
+    }
+
+    helper.sendPost(e.target.action, { oldPassword, newPassword, confirmPassword });
+    return false;
+}
+
 const LoginWindow = (props) => {
     return (
         <form id="loginForm"
@@ -78,9 +100,30 @@ const SignupWindow = (props) => {
     );
 };
 
+const ChangePasswordWindow = (props) => {
+    return (
+        <form id="changePasswordForm"
+            name="changePasswordForm"
+            onSubmit={handleChangePassword}
+            action="/change-password"
+            method="POST"
+            className="mainForm"
+        >
+            <label htmlFor="oldPass">Old Password: </label>
+            <input id="oldPass" type="password" name="oldPassword" placeholder="Old Password" />
+            <label htmlFor="newPass">New Password: </label>
+            <input id="newPass" type="password" name="newPassword" placeholder="New Password" />
+            <label htmlFor="confirmPass">Confirm New Password: </label>
+            <input id="confirmPass" type="password" name="confirmPassword" placeholder="Confirm New Password" />
+            <input className="formSubmit" type="submit" value="Change Password" />
+        </form>
+    );
+};
+
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
+    const changePasswordButton = document.getElementById('changePasswordButton');
 
     const root = createRoot(document.getElementById('content'));
 
@@ -93,6 +136,12 @@ const init = () => {
     signupButton.addEventListener('click', (e) => {
         e.preventDefault();
         root.render(<SignupWindow />);
+        return false;
+    });
+
+    changePasswordButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        root.render(<ChangePasswordWindow />);
         return false;
     });
 
